@@ -154,13 +154,26 @@ public class Loa {
 
 	private static void showGuiBoard(int nextPlayer) {
 		double halfsize = (1/((size*1.0)*2));
+		double fullsize = (1/(size*1.0));
 		StdDraw.setCanvasSize();
-		for(double i = halfsize; i <= 1- halfsize; i = i + (halfsize*2)){
-			StdDraw.filledSquare(i,i,halfsize);
+		for(double i = halfsize; i <= 1- halfsize; i = i + (halfsize*4)){
+			for(double k = halfsize;k <= 1- halfsize; k = k + (halfsize*4)){
+
+				StdDraw.setPenColor(StdDraw.LIGHT_GRAY);
+				StdDraw.filledSquare(k+halfsize*2,i,halfsize);
+				StdDraw.filledSquare(i,k+halfsize*2,halfsize);
+
+				StdDraw.setPenColor(StdDraw.DARK_GRAY);
+				StdDraw.filledSquare(i,i,halfsize);
+				StdDraw.filledSquare(i,k,halfsize);
+			}
 		}
 		StdDraw.setPenColor(StdDraw.RED);
 		/*for(double i=0.1;i<=0.9;i=i+0.2){
 			StdDraw.filledCircle(i,i,0.05);
+
+			StdDraw.filledSquare(halfsize,i,halfsize);
+			StdDraw.filledSquare(i,halfsize,halfsize);
 		}*/
 
 
