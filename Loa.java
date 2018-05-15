@@ -149,6 +149,7 @@ public class Loa {
 	}
 
 	private static void guiMode() {
+		Board.newBoard(size);
 		showGuiBoard(1);
 	}
 
@@ -163,18 +164,74 @@ public class Loa {
 				StdDraw.filledSquare(k+halfsize*2,i,halfsize);
 				StdDraw.filledSquare(i,k+halfsize*2,halfsize);
 
+			}
+		}
+
+		for(double i = halfsize; i <= 1.0; i = i + (halfsize*2)){
+			for(double k = i; k <= 1.0; k = k + (halfsize*4)){
+
 				StdDraw.setPenColor(StdDraw.DARK_GRAY);
 				StdDraw.filledSquare(i,i,halfsize);
 				StdDraw.filledSquare(i,k,halfsize);
+				StdDraw.filledSquare(k,i,halfsize);
+
 			}
 		}
-		StdDraw.setPenColor(StdDraw.RED);
-		/*for(double i=0.1;i<=0.9;i=i+0.2){
-			StdDraw.filledCircle(i,i,0.05);
 
-			StdDraw.filledSquare(halfsize,i,halfsize);
-			StdDraw.filledSquare(i,halfsize,halfsize);
-		}*/
+		//StdDraw.filledCircle(i,i,halfsize/2);
+		for (int r = size - 1; r >= 0; r--) {
+			System.out.print((char) ('A' + r) + " ");
+			for (int c = 0; c < size; c++) {
+				int piece = Board.getPiece(r, c);
+				if (piece == Board.BLACK) {
+					System.out.print("B");
+				} else if (piece == Board.WHITE) {
+					System.out.print("W");
+				} else {
+					System.out.print(".");
+				}
+				System.out.print(' ');
+			}
+			System.out.println();
+		}
+
+
+
+		for (int r = size - 1; r >= 0; r--) {
+			for (int c = 0; c < size; c++) {
+
+				int piece = Board.getPiece(r, c);
+				if (piece == Board.BLACK) {
+
+					StdDraw.setPenColor(StdDraw.BLACK);
+
+					if(r==size - 1){
+
+						StdDraw.filledCircle(halfsize+(c*(halfsize*2)),1 - halfsize,halfsize/2);
+
+					}else{
+
+						StdDraw.filledCircle(halfsize+(c*(halfsize*2)),halfsize,halfsize/2);
+
+					}
+
+
+				} else if (piece == Board.WHITE) {
+
+					StdDraw.setPenColor(StdDraw.RED);
+
+						if(c==0){
+
+							StdDraw.filledCircle(1 - halfsize,halfsize+(r*(halfsize*2)),halfsize/2);
+
+						}else{
+
+							StdDraw.filledCircle(halfsize,halfsize+(r*(halfsize*2)),halfsize/2);
+
+						}
+				}
+			}
+		}
 
 
 
