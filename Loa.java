@@ -1,4 +1,5 @@
 import java.util.Scanner;
+import javax.swing.JOptionPane;
 
 public class Loa {
 
@@ -150,10 +151,110 @@ public class Loa {
 
 	private static void guiMode() {
 		Board.newBoard(size);
-		showGuiBoard(1);
+		showGuiBoard(2);
+
+		String winner = " ";
+		int clicked = 0;
+		double fromX = 0.0;
+		double fromY = 0.0;
+		double toX = 0.0;
+		double toY = 0.0;
+		int fromCol = 0;
+		int fromRow = 0;
+		int toCol = 0;
+		int toRow = 0;
+		boolean done = false;
+		int mistake = 0;
+
+		while(done==false){
+
+			clicked = 0;
+			fromX = 0.0;
+			fromY = 0.0;
+			toX = 0.0;
+			toY = 0.0;
+			fromCol = 0;
+			fromRow = 0;
+			toCol = 0;
+			toRow = 0;
+			StdDraw.changeClicked();
+
+			while(Board.makeMove(2,fromRow,fromCol,toRow,toCol)==false){
+
+				if(Board.makeMove(2,fromRow,fromCol,toRow,toCol)==true){
+
+					Board.makeMove(2,fromRow,fromCol,toRow,toCol);
+					
+					if(Board.hasWon(2)==true){
+						done=true;
+						winner = "WINNER: black";
+					}else if(Board.hasWon(1)==true){
+						done=true;
+						winner = "WINNER: white";
+					}
+
+				}else{
+
+						JOptionPane.showMessageDialog(null,"Make a move");
+
+					clicked = 0;
+					fromX = 0.0;
+					fromY = 0.0;
+					toX = 0.0;
+					toY = 0.0;
+					fromCol = 0;
+					fromRow = 0;
+					toCol = 0;
+					toRow = 0;
+
+					StdDraw.changeClicked();
+
+					while(clicked!=2){
+
+						if(StdDraw.mousePressed()==true){
+							clicked = clicked + 1;
+
+							if(clicked==1){
+								fromX = StdDraw.mouseX();
+								fromY = StdDraw.mouseY();
+								StdDraw.changeClicked();
+							}
+
+							if(clicked==2){
+								toX = StdDraw.mouseX();
+								toY = StdDraw.mouseY();
+							}
+
+						}
+					}
+
+					fromCol=(int) (Math.floor(fromX/(1.0/size)));
+		  		fromRow=(int) (Math.floor((1.0-fromY)/(1.0/size)));
+	  			toCol=(int) (Math.floor(toX/(1.0/size)));
+	 				toRow=(int) (Math.floor((1.0-toY)/(1.0/size)));
+
+				}
+			}
+
+			Player.makeMove(1);
+
+			if(Board.hasWon(1)==true){
+				done=true;
+				winner = "WINNER: white";
+			}else if(Board.hasWon(2)==true){
+				done=true;
+				winner = "WINNER: black";
+			}
+
+			showGuiBoard(2);
+		}
+
+		JOptionPane.showMessageDialog(null,winner);
+		System.exit(1);
+
 	}
 
-	private static void showGuiBoard(int nextPlayer) {
+	private static void showGuiBoard(int nextPlayer) { //method to be called whenever the board is spawned or a move is made to show the change
 
 		double halfsize = (1/((size*1.0)*2));//determine half the width of a block dynamically according to the size that is given
 		StdDraw.setCanvasSize();//initialize the canvas on which is to be drawn
@@ -189,27 +290,13 @@ public class Loa {
 				if (piece == Board.BLACK) {
 
 					StdDraw.setPenColor(StdDraw.BLACK);
-
-					if(r==0){
-						StdDraw.filledCircle(halfsize+(c*(halfsize*2)),1 - halfsize,halfsize/2);
-					}else if(r==size-1){
-						StdDraw.filledCircle(halfsize+(c*(halfsize*2)),halfsize,halfsize/2);
-					}else{
-						StdDraw.filledCircle(halfsize+(c*(halfsize*2)),halfsize+((size-r-1)*(halfsize*2)),halfsize/2);
-					}
-
+					StdDraw.filledCircle(halfsize+(c*(halfsize*2)),halfsize+((size-r-1)*(halfsize*2)),halfsize/2);
 
 				} else if (piece == Board.WHITE) {
 
 					StdDraw.setPenColor(StdDraw.RED);
+					StdDraw.filledCircle(halfsize+(c*(halfsize*2)),halfsize+((size-r-1)*(halfsize*2)),halfsize/2);
 
-						if(c==0){
-							StdDraw.filledCircle(1 - halfsize,halfsize+(r*(halfsize*2)),halfsize/2);
-						}else if(c==size-1){
-							StdDraw.filledCircle(halfsize,halfsize+(r*(halfsize*2)),halfsize/2);
-						}else{
-							StdDraw.filledCircle(halfsize+(c*(halfsize*2)),halfsize+((size-r-1)*(halfsize*2)),halfsize/2);
-						}
 				}
 			}
 		}// end circle for loop
