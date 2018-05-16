@@ -154,19 +154,11 @@ public class Loa {
 	}
 
 	private static void showGuiBoard(int nextPlayer) {
-		double halfsize = (1/((size*1.0)*2));
-		double fullsize = (1/(size*1.0));
-		StdDraw.setCanvasSize();
-		for(double i = halfsize; i <= 1- halfsize; i = i + (halfsize*4)){
-			for(double k = halfsize;k <= 1- halfsize; k = k + (halfsize*4)){
 
-				StdDraw.setPenColor(StdDraw.LIGHT_GRAY);
-				StdDraw.filledSquare(k+halfsize*2,i,halfsize);
-				StdDraw.filledSquare(i,k+halfsize*2,halfsize);
+		double halfsize = (1/((size*1.0)*2));//determine half the width of a block dynamically according to the size that is given
+		StdDraw.setCanvasSize();//initialize the canvas on which is to be drawn
 
-			}
-		}
-
+		//start with first grid of dark grey blocks using the halfsize variable to determine their points of origin
 		for(double i = halfsize; i <= 1.0; i = i + (halfsize*2)){
 			for(double k = i; k <= 1.0; k = k + (halfsize*4)){
 
@@ -176,27 +168,20 @@ public class Loa {
 				StdDraw.filledSquare(k,i,halfsize);
 
 			}
-		}
+		} //end first grid
 
-		//StdDraw.filledCircle(i,i,halfsize/2);
-		for (int r = size - 1; r >= 0; r--) {
-			System.out.print((char) ('A' + r) + " ");
-			for (int c = 0; c < size; c++) {
-				int piece = Board.getPiece(r, c);
-				if (piece == Board.BLACK) {
-					System.out.print("B");
-				} else if (piece == Board.WHITE) {
-					System.out.print("W");
-				} else {
-					System.out.print(".");
-				}
-				System.out.print(' ');
+		//second grid of light grey blocks using the halfsize variable to determine their points of origin
+		for(double i = halfsize; i <= 1- halfsize; i = i + (halfsize*4)){
+			for(double k = halfsize;k <= 1- halfsize; k = k + (halfsize*4)){
+
+				StdDraw.setPenColor(StdDraw.LIGHT_GRAY);
+				StdDraw.filledSquare(k+halfsize*2,i,halfsize);
+				StdDraw.filledSquare(i,k+halfsize*2,halfsize);
+
 			}
-			System.out.println();
-		}
+		}// end second grid
 
-
-
+		// read where the pieces on the board are and display them using circles
 		for (int r = size - 1; r >= 0; r--) {
 			for (int c = 0; c < size; c++) {
 
@@ -205,14 +190,12 @@ public class Loa {
 
 					StdDraw.setPenColor(StdDraw.BLACK);
 
-					if(r==size - 1){
-
+					if(r==0){
 						StdDraw.filledCircle(halfsize+(c*(halfsize*2)),1 - halfsize,halfsize/2);
-
-					}else{
-
+					}else if(r==size-1){
 						StdDraw.filledCircle(halfsize+(c*(halfsize*2)),halfsize,halfsize/2);
-
+					}else{
+						StdDraw.filledCircle(halfsize+(c*(halfsize*2)),halfsize+((size-r-1)*(halfsize*2)),halfsize/2);
 					}
 
 
@@ -221,17 +204,15 @@ public class Loa {
 					StdDraw.setPenColor(StdDraw.RED);
 
 						if(c==0){
-
 							StdDraw.filledCircle(1 - halfsize,halfsize+(r*(halfsize*2)),halfsize/2);
-
-						}else{
-
+						}else if(c==size-1){
 							StdDraw.filledCircle(halfsize,halfsize+(r*(halfsize*2)),halfsize/2);
-
+						}else{
+							StdDraw.filledCircle(halfsize+(c*(halfsize*2)),halfsize+((size-r-1)*(halfsize*2)),halfsize/2);
 						}
 				}
 			}
-		}
+		}// end circle for loop
 
 
 
