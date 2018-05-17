@@ -5,6 +5,7 @@ public class Loa {
 
 	private static int size = 0;
 	private static int mode = 0;
+	private static boolean done = false;
 
 	public static void main(String[] args) {
 		if (args.length < 2) {
@@ -163,7 +164,6 @@ public class Loa {
 		int fromRow = 0;
 		int toCol = 0;
 		int toRow = 0;
-		boolean done = false;
 		int mistake = 0;
 
 		while(done==false){
@@ -187,46 +187,6 @@ public class Loa {
 				if(Board.makeMove(2,fromRow,fromCol,toRow,toCol)==true){
 
 					Board.makeMove(2,fromRow,fromCol,toRow,toCol);
-
-					if(Board.hasWon(2)==true){
-						done=true;
-						StdDraw.setPenColor(StdDraw.BLACK);
-						StdDraw.text(halfsize,-0.075,"B");
-						StdDraw.text(halfsize+(halfsize/4),-0.075,"L");
-						StdDraw.text(halfsize+(halfsize/4)*2,-0.075,"A");
-						StdDraw.text(halfsize+(halfsize/4)*3,-0.075,"C");
-						StdDraw.text(halfsize+(halfsize/4)*4,-0.075,"K");
-						StdDraw.text(halfsize+(halfsize/4)*5,-0.075," ");
-						StdDraw.text(halfsize+(halfsize/4)*6,-0.075," ");
-						StdDraw.text(halfsize+(halfsize/4)*7,-0.075,"W");
-						StdDraw.text(halfsize+(halfsize/4)*8,-0.075,"I");
-						StdDraw.text(halfsize+(halfsize/4)*9,-0.075,"N");
-						StdDraw.text(halfsize+(halfsize/4)*10,-0.075,"S");
-						try{
-							Thread.sleep(2500);
-						}catch (Exception e){
-						}
-						System.exit(1);
-					}else if(Board.hasWon(1)==true){
-						done=true;
-						StdDraw.setPenColor(StdDraw.BLACK);
-						StdDraw.text(halfsize,-0.075,"W");
-						StdDraw.text(halfsize+(halfsize/4),-0.075,"H");
-						StdDraw.text(halfsize+(halfsize/4)*2,-0.075,"I");
-						StdDraw.text(halfsize+(halfsize/4)*3,-0.075,"T");
-						StdDraw.text(halfsize+(halfsize/4)*4,-0.075,"E");
-						StdDraw.text(halfsize+(halfsize/4)*5,-0.075," ");
-						StdDraw.text(halfsize+(halfsize/4)*6,-0.075," ");
-						StdDraw.text(halfsize+(halfsize/4)*7,-0.075,"W");
-						StdDraw.text(halfsize+(halfsize/4)*8,-0.075,"I");
-						StdDraw.text(halfsize+(halfsize/4)*9,-0.075,"N");
-						StdDraw.text(halfsize+(halfsize/4)*10,-0.075,"S");
-						try{
-							Thread.sleep(2500);
-						}catch (Exception e){
-						}
-						System.exit(1);
-					}
 
 				}else{
 
@@ -270,11 +230,11 @@ public class Loa {
 	  			toCol=(int) (Math.floor(toX/(1.0/size)));
 	 				toRow=(int) (Math.floor((1.0-toY)/(1.0/size)));
 
-
 				}
 			}
 
 			showGuiBoard(2);
+			winDisplay();
 			StdDraw.setPenColor(StdDraw.RED);
 			Player.makeMove(1);
 			StdDraw.filledCircle(1.075,1-0.075,0.05);
@@ -284,47 +244,51 @@ public class Loa {
 
 			}
 			showGuiBoard(2);
+			winDisplay();
+		}
+	}
 
-			if(Board.hasWon(1)==true){
-				done=true;
-				StdDraw.setPenColor(StdDraw.BLACK);
-				StdDraw.text(halfsize,-0.075,"W");
-				StdDraw.text(halfsize+(halfsize/4),-0.075,"H");
-				StdDraw.text(halfsize+(halfsize/4)*2,-0.075,"I");
-				StdDraw.text(halfsize+(halfsize/4)*3,-0.075,"T");
-				StdDraw.text(halfsize+(halfsize/4)*4,-0.075,"E");
-				StdDraw.text(halfsize+(halfsize/4)*5,-0.075," ");
-				StdDraw.text(halfsize+(halfsize/4)*6,-0.075," ");
-				StdDraw.text(halfsize+(halfsize/4)*7,-0.075,"W");
-				StdDraw.text(halfsize+(halfsize/4)*8,-0.075,"I");
-				StdDraw.text(halfsize+(halfsize/4)*9,-0.075,"N");
-				StdDraw.text(halfsize+(halfsize/4)*10,-0.075,"S");
-				try{
-					Thread.sleep(2500);
-				}catch (Exception e){
-				}
-				System.exit(1);
-			}else if(Board.hasWon(2)==true){
-				done=true;
-				StdDraw.setPenColor(StdDraw.BLACK);
-				StdDraw.text(halfsize,-0.075,"B");
-				StdDraw.text(halfsize+(halfsize/4),-0.075,"L");
-				StdDraw.text(halfsize+(halfsize/4)*2,-0.075,"A");
-				StdDraw.text(halfsize+(halfsize/4)*3,-0.075,"C");
-				StdDraw.text(halfsize+(halfsize/4)*4,-0.075,"K");
-				StdDraw.text(halfsize+(halfsize/4)*5,-0.075," ");
-				StdDraw.text(halfsize+(halfsize/4)*6,-0.075," ");
-				StdDraw.text(halfsize+(halfsize/4)*7,-0.075,"W");
-				StdDraw.text(halfsize+(halfsize/4)*8,-0.075,"I");
-				StdDraw.text(halfsize+(halfsize/4)*9,-0.075,"N");
-				StdDraw.text(halfsize+(halfsize/4)*10,-0.075,"S");
-				try{
-					Thread.sleep(2500);
-				}catch (Exception e){
-				}
-				System.exit(1);
+	private static void winDisplay(){
+
+		double halfsize = (1/((size*1.0)*2));//determine half the width of a block dynamically according to the size that is given
+		if(Board.hasWon(1)==true){
+			done=true;
+			StdDraw.setPenColor(StdDraw.BLACK);
+			StdDraw.text(halfsize,-0.075,"W");
+			StdDraw.text(halfsize+(halfsize/4),-0.075,"H");
+			StdDraw.text(halfsize+(halfsize/4)*2,-0.075,"I");
+			StdDraw.text(halfsize+(halfsize/4)*3,-0.075,"T");
+			StdDraw.text(halfsize+(halfsize/4)*4,-0.075,"E");
+			StdDraw.text(halfsize+(halfsize/4)*5,-0.075," ");
+			StdDraw.text(halfsize+(halfsize/4)*6,-0.075," ");
+			StdDraw.text(halfsize+(halfsize/4)*7,-0.075,"W");
+			StdDraw.text(halfsize+(halfsize/4)*8,-0.075,"I");
+			StdDraw.text(halfsize+(halfsize/4)*9,-0.075,"N");
+			StdDraw.text(halfsize+(halfsize/4)*10,-0.075,"S");
+			try{
+				Thread.sleep(2500);
+			}catch (Exception e){
 			}
-
+			System.exit(1);
+		}else if(Board.hasWon(2)==true){
+			done=true;
+			StdDraw.setPenColor(StdDraw.BLACK);
+			StdDraw.text(halfsize,-0.075,"B");
+			StdDraw.text(halfsize+(halfsize/4),-0.075,"L");
+			StdDraw.text(halfsize+(halfsize/4)*2,-0.075,"A");
+			StdDraw.text(halfsize+(halfsize/4)*3,-0.075,"C");
+			StdDraw.text(halfsize+(halfsize/4)*4,-0.075,"K");
+			StdDraw.text(halfsize+(halfsize/4)*5,-0.075," ");
+			StdDraw.text(halfsize+(halfsize/4)*6,-0.075," ");
+			StdDraw.text(halfsize+(halfsize/4)*7,-0.075,"W");
+			StdDraw.text(halfsize+(halfsize/4)*8,-0.075,"I");
+			StdDraw.text(halfsize+(halfsize/4)*9,-0.075,"N");
+			StdDraw.text(halfsize+(halfsize/4)*10,-0.075,"S");
+			try{
+				Thread.sleep(2500);
+			}catch (Exception e){
+			}
+			System.exit(1);
 		}
 	}
 
