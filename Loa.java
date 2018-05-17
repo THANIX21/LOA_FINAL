@@ -151,9 +151,9 @@ public class Loa {
 
 	private static void guiMode() {
 		Board.newBoard(size);
+		double halfsize = (1/((size*1.0)*2));
 		showGuiBoard(2);
 
-		String winner = " ";
 		int clicked = 0;
 		double fromX = 0.0;
 		double fromY = 0.0;
@@ -181,21 +181,54 @@ public class Loa {
 
 			while(Board.makeMove(2,fromRow,fromCol,toRow,toCol)==false){
 
+				StdDraw.setPenColor(StdDraw.BLACK);
+				StdDraw.filledCircle(1.075,1-0.075,0.05);
+
 				if(Board.makeMove(2,fromRow,fromCol,toRow,toCol)==true){
 
 					Board.makeMove(2,fromRow,fromCol,toRow,toCol);
-					
+
 					if(Board.hasWon(2)==true){
 						done=true;
-						winner = "WINNER: black";
+						StdDraw.setPenColor(StdDraw.BLACK);
+						StdDraw.text(halfsize,-0.075,"B");
+						StdDraw.text(halfsize+(halfsize/4),-0.075,"L");
+						StdDraw.text(halfsize+(halfsize/4)*2,-0.075,"A");
+						StdDraw.text(halfsize+(halfsize/4)*3,-0.075,"C");
+						StdDraw.text(halfsize+(halfsize/4)*4,-0.075,"K");
+						StdDraw.text(halfsize+(halfsize/4)*5,-0.075," ");
+						StdDraw.text(halfsize+(halfsize/4)*6,-0.075," ");
+						StdDraw.text(halfsize+(halfsize/4)*7,-0.075,"W");
+						StdDraw.text(halfsize+(halfsize/4)*8,-0.075,"I");
+						StdDraw.text(halfsize+(halfsize/4)*9,-0.075,"N");
+						StdDraw.text(halfsize+(halfsize/4)*10,-0.075,"S");
+						try{
+							Thread.sleep(2500);
+						}catch (Exception e){
+						}
+						System.exit(1);
 					}else if(Board.hasWon(1)==true){
 						done=true;
-						winner = "WINNER: white";
+						StdDraw.setPenColor(StdDraw.BLACK);
+						StdDraw.text(halfsize,-0.075,"W");
+						StdDraw.text(halfsize+(halfsize/4),-0.075,"H");
+						StdDraw.text(halfsize+(halfsize/4)*2,-0.075,"I");
+						StdDraw.text(halfsize+(halfsize/4)*3,-0.075,"T");
+						StdDraw.text(halfsize+(halfsize/4)*4,-0.075,"E");
+						StdDraw.text(halfsize+(halfsize/4)*5,-0.075," ");
+						StdDraw.text(halfsize+(halfsize/4)*6,-0.075," ");
+						StdDraw.text(halfsize+(halfsize/4)*7,-0.075,"W");
+						StdDraw.text(halfsize+(halfsize/4)*8,-0.075,"I");
+						StdDraw.text(halfsize+(halfsize/4)*9,-0.075,"N");
+						StdDraw.text(halfsize+(halfsize/4)*10,-0.075,"S");
+						try{
+							Thread.sleep(2500);
+						}catch (Exception e){
+						}
+						System.exit(1);
 					}
 
 				}else{
-
-						JOptionPane.showMessageDialog(null,"Make a move");
 
 					clicked = 0;
 					fromX = 0.0;
@@ -212,6 +245,10 @@ public class Loa {
 					while(clicked!=2){
 
 						if(StdDraw.mousePressed()==true){
+
+							if((((StdDraw.mouseX())>=1-halfsize*4)&&((StdDraw.mouseX())<=1))&&(StdDraw.mouseY()<0)){
+								System.exit(1);
+							}
 							clicked = clicked + 1;
 
 							if(clicked==1){
@@ -233,31 +270,77 @@ public class Loa {
 	  			toCol=(int) (Math.floor(toX/(1.0/size)));
 	 				toRow=(int) (Math.floor((1.0-toY)/(1.0/size)));
 
+
 				}
 			}
 
+			showGuiBoard(2);
+			StdDraw.setPenColor(StdDraw.RED);
 			Player.makeMove(1);
+			StdDraw.filledCircle(1.075,1-0.075,0.05);
+			try{
+				Thread.sleep(1000);
+			}catch (Exception e){
+
+			}
+			showGuiBoard(2);
 
 			if(Board.hasWon(1)==true){
 				done=true;
-				winner = "WINNER: white";
+				StdDraw.setPenColor(StdDraw.BLACK);
+				StdDraw.text(halfsize,-0.075,"W");
+				StdDraw.text(halfsize+(halfsize/4),-0.075,"H");
+				StdDraw.text(halfsize+(halfsize/4)*2,-0.075,"I");
+				StdDraw.text(halfsize+(halfsize/4)*3,-0.075,"T");
+				StdDraw.text(halfsize+(halfsize/4)*4,-0.075,"E");
+				StdDraw.text(halfsize+(halfsize/4)*5,-0.075," ");
+				StdDraw.text(halfsize+(halfsize/4)*6,-0.075," ");
+				StdDraw.text(halfsize+(halfsize/4)*7,-0.075,"W");
+				StdDraw.text(halfsize+(halfsize/4)*8,-0.075,"I");
+				StdDraw.text(halfsize+(halfsize/4)*9,-0.075,"N");
+				StdDraw.text(halfsize+(halfsize/4)*10,-0.075,"S");
+				try{
+					Thread.sleep(2500);
+				}catch (Exception e){
+				}
+				System.exit(1);
 			}else if(Board.hasWon(2)==true){
 				done=true;
-				winner = "WINNER: black";
+				StdDraw.setPenColor(StdDraw.BLACK);
+				StdDraw.text(halfsize,-0.075,"B");
+				StdDraw.text(halfsize+(halfsize/4),-0.075,"L");
+				StdDraw.text(halfsize+(halfsize/4)*2,-0.075,"A");
+				StdDraw.text(halfsize+(halfsize/4)*3,-0.075,"C");
+				StdDraw.text(halfsize+(halfsize/4)*4,-0.075,"K");
+				StdDraw.text(halfsize+(halfsize/4)*5,-0.075," ");
+				StdDraw.text(halfsize+(halfsize/4)*6,-0.075," ");
+				StdDraw.text(halfsize+(halfsize/4)*7,-0.075,"W");
+				StdDraw.text(halfsize+(halfsize/4)*8,-0.075,"I");
+				StdDraw.text(halfsize+(halfsize/4)*9,-0.075,"N");
+				StdDraw.text(halfsize+(halfsize/4)*10,-0.075,"S");
+				try{
+					Thread.sleep(2500);
+				}catch (Exception e){
+				}
+				System.exit(1);
 			}
 
-			showGuiBoard(2);
 		}
-
-		JOptionPane.showMessageDialog(null,winner);
-		System.exit(1);
-
 	}
 
 	private static void showGuiBoard(int nextPlayer) { //method to be called whenever the board is spawned or a move is made to show the change
 
 		double halfsize = (1/((size*1.0)*2));//determine half the width of a block dynamically according to the size that is given
 		StdDraw.setCanvasSize();//initialize the canvas on which is to be drawn
+		StdDraw.setXscale(0,1.15);//set border size x
+		StdDraw.setYscale(-0.15,1.0);//set border size y
+		StdDraw.setPenColor(StdDraw.RED);
+		StdDraw.filledRectangle(1-halfsize*2,-0.075,halfsize*2,0.075);
+		StdDraw.setPenColor(StdDraw.BLACK);
+		StdDraw.text(1-halfsize*3,-0.075,"Q");
+		StdDraw.text(1-halfsize*3+(halfsize/2),-0.075,"U");
+		StdDraw.text(1-halfsize*3+(halfsize/2)*2,-0.075,"I");
+		StdDraw.text(1-halfsize*3+(halfsize/2)*3,-0.075,"T");
 
 		//start with first grid of dark grey blocks using the halfsize variable to determine their points of origin
 		for(double i = halfsize; i <= 1.0; i = i + (halfsize*2)){
@@ -300,8 +383,6 @@ public class Loa {
 				}
 			}
 		}// end circle for loop
-
-
 
 	}
 
