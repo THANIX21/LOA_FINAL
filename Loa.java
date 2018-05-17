@@ -145,9 +145,12 @@ public class Loa {
 	}
 
 	private static void multiMode(String host) {
-		/*--------------------------------------------
-		 * FILL IN THE CODE FOR MULTIPLAYER MODE
-		 *-------------------------------------------*/
+
+		/*Scanner s = new Scanner(System.in);
+		int nextPlayer = Board.WHITE; //white begins
+		boolean done = false;
+		Board.newBoard(size);
+		showBoard();*/
 	}
 
 	private static void guiMode() {
@@ -155,6 +158,7 @@ public class Loa {
 		double halfsize = (1/((size*1.0)*2));
 		showGuiBoard(2);
 
+		int move = 0;
 		int clicked = 0;
 		double fromX = 0.0;
 		double fromY = 0.0;
@@ -168,6 +172,7 @@ public class Loa {
 
 		while(done==false){
 
+			move = 0;
 			clicked = 0;
 			fromX = 0.0;
 			fromY = 0.0;
@@ -187,9 +192,16 @@ public class Loa {
 				if(Board.makeMove(2,fromRow,fromCol,toRow,toCol)==true){
 
 					Board.makeMove(2,fromRow,fromCol,toRow,toCol);
+					move = 0;
 
 				}else{
 
+					move++;
+					if(move >=2){
+
+						JOptionPane.showMessageDialog(null,"Invalid move");
+
+					}
 					clicked = 0;
 					fromX = 0.0;
 					fromY = 0.0;
