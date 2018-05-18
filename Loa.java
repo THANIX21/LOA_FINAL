@@ -146,11 +146,29 @@ public class Loa {
 
 	private static void multiMode(String host) {
 
-		/*Scanner s = new Scanner(System.in);
-		int nextPlayer = Board.WHITE; //white begins
-		boolean done = false;
-		Board.newBoard(size);
-		showBoard();*/
+	 	String sdsz = "";
+
+	  int c = Networking.connect(host);
+
+		if(c == Networking.SERVER_MODE){
+
+			sdsz = Integer.toString(size);
+			Networking.write(sdsz);
+			Board.newBoard(size);
+			showBoard();
+
+		}else if(c == Networking.CLIENT_MODE){
+
+			size = Integer.parseInt(Networking.read());;
+			Board.newBoard(size);
+			showBoard();
+
+		}else{
+
+			System.out.println("Error");
+
+		}
+
 	}
 
 	private static void guiMode() {
@@ -196,12 +214,6 @@ public class Loa {
 
 				}else{
 
-					move++;
-					if(move >=2){
-
-						JOptionPane.showMessageDialog(null,"Invalid move");
-
-					}
 					clicked = 0;
 					fromX = 0.0;
 					fromY = 0.0;
@@ -308,21 +320,20 @@ public class Loa {
 
 		double halfsize = (1/((size*1.0)*2));//determine half the width of a block dynamically according to the size that is given
 		StdDraw.setCanvasSize();//initialize the canvas on which is to be drawn
-		StdDraw.setXscale(0,1.15);//set border size x
-		StdDraw.setYscale(-0.15,1.0);//set border size y
+
+		StdDraw.setXscale(0,1.10);//set border size x
+		StdDraw.setYscale(-0.10,1.0);//set border size y
+
 		StdDraw.setPenColor(StdDraw.RED);
 		StdDraw.filledRectangle(1-halfsize*2,-0.075,halfsize*2,0.075);
 		StdDraw.setPenColor(StdDraw.BLACK);
-		StdDraw.text(1-halfsize*3,-0.075,"Q");
-		StdDraw.text(1-halfsize*3+(halfsize/2),-0.075,"U");
-		StdDraw.text(1-halfsize*3+(halfsize/2)*2,-0.075,"I");
-		StdDraw.text(1-halfsize*3+(halfsize/2)*3,-0.075,"T");
+		StdDraw.text(1-halfsize*3,-0.075,"QUIT");
 
 		//start with first grid of dark grey blocks using the halfsize variable to determine their points of origin
 		for(double i = halfsize; i <= 1.0; i = i + (halfsize*2)){
 			for(double k = i; k <= 1.0; k = k + (halfsize*4)){
 
-				StdDraw.setPenColor(StdDraw.DARK_GRAY);
+				StdDraw.setPenColor(StdDraw.LIGHT_GRAY);
 				StdDraw.filledSquare(i,i,halfsize);
 				StdDraw.filledSquare(i,k,halfsize);
 				StdDraw.filledSquare(k,i,halfsize);
@@ -334,7 +345,7 @@ public class Loa {
 		for(double i = halfsize; i <= 1- halfsize; i = i + (halfsize*4)){
 			for(double k = halfsize;k <= 1- halfsize; k = k + (halfsize*4)){
 
-				StdDraw.setPenColor(StdDraw.LIGHT_GRAY);
+				StdDraw.setPenColor(StdDraw.DARK_GRAY);
 				StdDraw.filledSquare(k+halfsize*2,i,halfsize);
 				StdDraw.filledSquare(i,k+halfsize*2,halfsize);
 
