@@ -147,29 +147,221 @@ public class Loa {
 	private static void multiMode(String host) {
 
 	 	String sdsz = "";
-
+		String move = "";
+		int nextPlayer = 2;
 	  int c = Networking.connect(host);
+		int srcRow = 0;
+		int srcCol = 0;
+		int dstRow = 0;
+		int dstCol = 0;
 
-		if(c == Networking.SERVER_MODE){
+			if(c == Networking.SERVER_MODE){ //servermode initializer
 
-			sdsz = Integer.toString(size);
-			Networking.write(sdsz);
-			Board.newBoard(size);
-			showBoard();
+				sdsz = Integer.toString(size);
+				Networking.write(sdsz);
+				Scanner s = new Scanner(System.in);
+				boolean done = false;
+				Board.newBoard(size);
+				showBoard();
 
-		}else if(c == Networking.CLIENT_MODE){
+				while(done==false){
 
-			size = Integer.parseInt(Networking.read());;
-			Board.newBoard(size);
-			showBoard();
+					if(nextPlayer==Networking.SERVER_MODE){
 
-		}else{
+						while(Board.makeMove(nextPlayer, srcRow, srcCol, dstRow, dstCol)==false){
 
-			System.out.println("Error");
+							move = s.next();
 
+							if (move.length() != 4) {
+								JOptionPane.showMessageDialog(null,"Invalid input");
+							}else{
+
+								srcRow = move.charAt(0) - 'A';
+								srcCol = move.charAt(1) - 'A';
+								dstRow = move.charAt(2) - 'A';
+								dstCol = move.charAt(3) - 'A';
+
+								if(move.equals("QUIT")){
+
+									Networking.write("QUIT");
+									JOptionPane.showMessageDialog(null,"You have forfeited");
+									System.exit(1);
+
+								}else if(Board.makeMove(nextPlayer, srcRow, srcCol, dstRow, dstCol)==false){
+
+									JOptionPane.showMessageDialog(null,"Invalid move, try again");
+
+								}else{
+
+									Board.makeMove(nextPlayer, srcRow, srcCol, dstRow, dstCol);
+									showBoard();
+									Networking.write(move);
+									nextPlayer = 1;
+
+
+									if(Board.hasWon(1)==true){
+
+										JOptionPane.showMessageDialog(null,"You have won");
+										Networking.write(move);
+										done = true;
+										System.exit(1);
+
+									}else if(Board.hasWon(2)==true){
+
+										JOptionPane.showMessageDialog(null,"You have lost");
+										Networking.write(move);
+										done = true;
+										System.exit(1);
+
+									}
+								}
+							}
+						}
+						showBoard();
+
+					}else{
+						move = Networking.read();
+
+						if(move.equals("QUIT")){
+
+							JOptionPane.showMessageDialog(null,"The other player has forfeited");
+							System.exit(1);
+
+						}else{
+
+							srcRow = move.charAt(0) - 'A';
+							srcCol = move.charAt(1) - 'A';
+							dstRow = move.charAt(2) - 'A';
+							dstCol = move.charAt(3) - 'A';
+
+							Board.makeMove(nextPlayer, srcRow, srcCol, dstRow, dstCol);
+							showBoard();
+							Networking.write(move);
+							nextPlayer = 1;
+
+
+							if(Board.hasWon(1)==true){
+
+								JOptionPane.showMessageDialog(null,"You have won");
+								Networking.write(move);
+								done = true;
+								System.exit(1);;
+
+							}else if(Board.hasWon(2)==true){
+
+								JOptionPane.showMessageDialog(null,"You have lost");
+								Networking.write(move);
+								done = true;
+								System.exit(1);
+
+							}
+					}
+				}
+			}
+
+
+		}else if(c == Networking.CLIENT_MODE){ //clientmode initializer
+
+				size = Integer.parseInt(Networking.read());;
+				Scanner s = new Scanner(System.in);
+				boolean done = false;
+				Board.newBoard(size);
+				showBoard();
+
+				while(done==false){
+				if(nextPlayer==Networking.CLIENT_MODE){
+
+					while(Board.makeMove(nextPlayer, srcRow, srcCol, dstRow, dstCol)==false){
+
+						move = s.next();
+
+						if (move.length() != 4) {
+							JOptionPane.showMessageDialog(null,"Invalid input");
+						}else{
+
+							srcRow = move.charAt(0) - 'A';
+							srcCol = move.charAt(1) - 'A';
+							dstRow = move.charAt(2) - 'A';
+							dstCol = move.charAt(3) - 'A';
+
+							if(move.equals("QUIT")){
+
+								Networking.write("QUIT");
+								JOptionPane.showMessageDialog(null,"You have forfeited");
+								System.exit(1);
+
+							}else if(Board.makeMove(nextPlayer, srcRow, srcCol, dstRow, dstCol)==false){
+
+								JOptionPane.showMessageDialog(null,"Invalid move, try again");
+
+							}else{
+
+								Board.makeMove(nextPlayer, srcRow, srcCol, dstRow, dstCol);
+								showBoard();
+								Networking.write(move);
+								nextPlayer = 2;
+
+								if(Board.hasWon(1)==true){
+
+									JOptionPane.showMessageDialog(null,"You have won");
+									Networking.write(move);
+									done = true;
+									System.exit(1);
+
+								}else if(Board.hasWon(2)==true){
+
+									JOptionPane.showMessageDialog(null,"You have lost");
+									Networking.write(move);
+									done = true;
+									System.exit(1);
+
+								}
+							}
+						}
+					}
+					showBoard();
+
+				}else{
+
+					move = Networking.read();
+
+					if(move.equals("QUIT")){
+
+						JOptionPane.showMessageDialog(null,"The other player has forfeited");
+						System.exit(1);
+
+					}else{
+
+						srcRow = move.charAt(0) - 'A';
+						srcCol = move.charAt(1) - 'A';
+						dstRow = move.charAt(2) - 'A';
+						dstCol = move.charAt(3) - 'A';
+
+						Board.makeMove(nextPlayer, srcRow, srcCol, dstRow, dstCol);
+						showBoard();
+						Networking.write(move);
+						nextPlayer = 2;
+
+						if(Board.hasWon(2)==true){
+
+							JOptionPane.showMessageDialog(null,"You have won");
+							Networking.write(move);
+							done = true;
+							System.exit(1);
+
+						}else if(Board.hasWon(1)==true){
+
+							JOptionPane.showMessageDialog(null,"You have lost");
+							Networking.write(move);
+							done = true;
+							System.exit(1);
+
+						}
+				}
+			}
 		}
-
 	}
+}
 
 	private static void guiMode() {
 		Board.newBoard(size);
@@ -205,7 +397,12 @@ public class Loa {
 			while(Board.makeMove(2,fromRow,fromCol,toRow,toCol)==false){
 
 				StdDraw.setPenColor(StdDraw.BLACK);
-				StdDraw.filledCircle(1.075,1-0.075,0.05);
+				StdDraw.filledCircle(1.05,1-0.05,0.025);
+				StdDraw.text(1.05,1-(halfsize*2+(halfsize/size)),"B");
+				StdDraw.text(1.05,1-(halfsize*2+(halfsize/size)*2),"L");
+				StdDraw.text(1.05,1-(halfsize*2+(halfsize/size)*3),"A");
+				StdDraw.text(1.05,1-(halfsize*2+(halfsize/size)*4),"C");
+				StdDraw.text(1.05,1-(halfsize*2+(halfsize/size)*5),"K");
 
 				if(Board.makeMove(2,fromRow,fromCol,toRow,toCol)==true){
 
@@ -261,7 +458,12 @@ public class Loa {
 			winDisplay();
 			StdDraw.setPenColor(StdDraw.RED);
 			Player.makeMove(1);
-			StdDraw.filledCircle(1.075,1-0.075,0.05);
+			StdDraw.filledCircle(1.05,1-0.05,0.025);
+			StdDraw.text(1.05,1-(halfsize*2+(halfsize/size)),"W");
+			StdDraw.text(1.05,1-(halfsize*2+(halfsize/size)*2),"H");
+			StdDraw.text(1.05,1-(halfsize*2+(halfsize/size)*3),"I");
+			StdDraw.text(1.05,1-(halfsize*2+(halfsize/size)*4),"T");
+			StdDraw.text(1.05,1-(halfsize*2+(halfsize/size)*5),"E");
 			try{
 				Thread.sleep(1000);
 			}catch (Exception e){
@@ -278,17 +480,17 @@ public class Loa {
 		if(Board.hasWon(1)==true){
 			done=true;
 			StdDraw.setPenColor(StdDraw.BLACK);
-			StdDraw.text(halfsize,-0.075,"W");
-			StdDraw.text(halfsize+(halfsize/4),-0.075,"H");
-			StdDraw.text(halfsize+(halfsize/4)*2,-0.075,"I");
-			StdDraw.text(halfsize+(halfsize/4)*3,-0.075,"T");
-			StdDraw.text(halfsize+(halfsize/4)*4,-0.075,"E");
-			StdDraw.text(halfsize+(halfsize/4)*5,-0.075," ");
-			StdDraw.text(halfsize+(halfsize/4)*6,-0.075," ");
-			StdDraw.text(halfsize+(halfsize/4)*7,-0.075,"W");
-			StdDraw.text(halfsize+(halfsize/4)*8,-0.075,"I");
-			StdDraw.text(halfsize+(halfsize/4)*9,-0.075,"N");
-			StdDraw.text(halfsize+(halfsize/4)*10,-0.075,"S");
+			StdDraw.text(halfsize,-0.05,"W");
+			StdDraw.text(halfsize+(halfsize/4),-0.05,"H");
+			StdDraw.text(halfsize+(halfsize/4)*2,-0.05,"I");
+			StdDraw.text(halfsize+(halfsize/4)*3,-0.05,"T");
+			StdDraw.text(halfsize+(halfsize/4)*4,-0.05,"E");
+			StdDraw.text(halfsize+(halfsize/4)*5,-0.05," ");
+			StdDraw.text(halfsize+(halfsize/4)*6,-0.05," ");
+			StdDraw.text(halfsize+(halfsize/4)*7,-0.05,"W");
+			StdDraw.text(halfsize+(halfsize/4)*8,-0.05,"I");
+			StdDraw.text(halfsize+(halfsize/4)*9,-0.05,"N");
+			StdDraw.text(halfsize+(halfsize/4)*10,-0.05,"S");
 			try{
 				Thread.sleep(2500);
 			}catch (Exception e){
@@ -297,17 +499,17 @@ public class Loa {
 		}else if(Board.hasWon(2)==true){
 			done=true;
 			StdDraw.setPenColor(StdDraw.BLACK);
-			StdDraw.text(halfsize,-0.075,"B");
-			StdDraw.text(halfsize+(halfsize/4),-0.075,"L");
-			StdDraw.text(halfsize+(halfsize/4)*2,-0.075,"A");
-			StdDraw.text(halfsize+(halfsize/4)*3,-0.075,"C");
-			StdDraw.text(halfsize+(halfsize/4)*4,-0.075,"K");
-			StdDraw.text(halfsize+(halfsize/4)*5,-0.075," ");
-			StdDraw.text(halfsize+(halfsize/4)*6,-0.075," ");
-			StdDraw.text(halfsize+(halfsize/4)*7,-0.075,"W");
-			StdDraw.text(halfsize+(halfsize/4)*8,-0.075,"I");
-			StdDraw.text(halfsize+(halfsize/4)*9,-0.075,"N");
-			StdDraw.text(halfsize+(halfsize/4)*10,-0.075,"S");
+			StdDraw.text(halfsize,-0.05,"B");
+			StdDraw.text(halfsize+(halfsize/4),-0.05,"L");
+			StdDraw.text(halfsize+(halfsize/4)*2,-0.05,"A");
+			StdDraw.text(halfsize+(halfsize/4)*3,-0.05,"C");
+			StdDraw.text(halfsize+(halfsize/4)*4,-0.05,"K");
+			StdDraw.text(halfsize+(halfsize/4)*5,-0.05," ");
+			StdDraw.text(halfsize+(halfsize/4)*6,-0.05," ");
+			StdDraw.text(halfsize+(halfsize/4)*7,-0.05,"W");
+			StdDraw.text(halfsize+(halfsize/4)*8,-0.05,"I");
+			StdDraw.text(halfsize+(halfsize/4)*9,-0.05,"N");
+			StdDraw.text(halfsize+(halfsize/4)*10,-0.05,"S");
 			try{
 				Thread.sleep(2500);
 			}catch (Exception e){
@@ -325,9 +527,9 @@ public class Loa {
 		StdDraw.setYscale(-0.10,1.0);//set border size y
 
 		StdDraw.setPenColor(StdDraw.RED);
-		StdDraw.filledRectangle(1-halfsize*2,-0.075,halfsize*2,0.075);
+		StdDraw.filledRectangle(1-halfsize,-0.05,halfsize,0.05);
 		StdDraw.setPenColor(StdDraw.BLACK);
-		StdDraw.text(1-halfsize*3,-0.075,"QUIT");
+		StdDraw.text(1-halfsize,-0.05,"QUIT");
 
 		//start with first grid of dark grey blocks using the halfsize variable to determine their points of origin
 		for(double i = halfsize; i <= 1.0; i = i + (halfsize*2)){
